@@ -34,7 +34,7 @@ public class UI_TitlePopup : UI_Popup
 
         return true;
     }
-
+ 
     void OnClickStartButton()
     {
         Debug.Log("OnClickStartButton");
