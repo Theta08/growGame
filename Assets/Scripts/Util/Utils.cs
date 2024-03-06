@@ -6,12 +6,10 @@ public class Utils
 {
     public static T GetOrAddComponent<T>(GameObject go) where T : UnityEngine.Component
     {
-        T compoent = go.GetComponent<T>();
-        
-        if (compoent == null)
-            compoent = go.AddComponent<T>();
-        
-        return compoent;
+        T component = go.GetComponent<T>();
+        if (component == null)
+            component = go.AddComponent<T>();
+        return component;
     }
 
     public static T FindChild<T>(GameObject go, string name = null, bool recursive = false) where T : UnityEngine.Object

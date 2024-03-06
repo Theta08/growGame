@@ -10,8 +10,12 @@ public class Managers : MonoBehaviour
     public static Managers Instance { get { return s_instance; } }
 
     private static ResourceManager s_resourceManager = new ResourceManager();
+    private static UIManager s_uiManager = new UIManager();
+    private static GameManager s_gameManager = new GameManager();
     
-    public static ResourceManager Resource{get { Init(); return s_resourceManager; }}
+    public static ResourceManager Resource { get { Init(); return s_resourceManager; }}
+    public static UIManager UI { get { Init(); return s_uiManager; }}
+    public static GameManager Game { get { Init(); return s_gameManager; }}
     
     private void Start()
     {
