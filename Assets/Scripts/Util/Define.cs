@@ -12,6 +12,14 @@ public class Define
         PointerUp,
     }
     
+    public enum Sound
+    {
+        Bgm,
+        Effect,
+        Speech,
+        Max,
+    }
+    
     public enum Scene
     {
         Unknown,

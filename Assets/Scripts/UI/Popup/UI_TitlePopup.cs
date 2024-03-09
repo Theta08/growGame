@@ -32,12 +32,16 @@ public class UI_TitlePopup : UI_Popup
         GetText((int)Texts.StartButtonText).text = "시작하기";
         GetText((int)Texts.StartButtonText2).text = "시작하기2";
 
+        Managers.Sound.Clear();
+        Managers.Sound.Play(Define.Sound.Bgm, "Sound_MainTitle", 0.5f);
         return true;
     }
  
     void OnClickStartButton()
     {
         Debug.Log("OnClickStartButton");
+
+        Managers.Sound.Play(Define.Sound.Effect, "Sound_MainButton");
         
         // TODO 게임저장 시스템 구현 해야함
         // if(Managers.Game.LoadGame())

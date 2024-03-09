@@ -51,11 +51,14 @@ public class UI_NamePopup : UI_Popup
     
     void OnClickConfirmButton()
     {
+        Managers.Sound.Play(Define.Sound.Effect, "Sound_MainButton");
+        
         Debug.Log("ConfirmButton 실행!");
-
         Managers.Game.Name = _inputField.text;
         
-        // Managers.UI.ClosePopupUI(this);
-        // Managers.UI.ShowPopupUI<UI_NamePopup>();
+        Debug.Log($"name : {_inputField.text}");
+        
+        Managers.UI.ClosePopupUI(this);
+        Managers.UI.ShowPopupUI<UI_PlayPopup>();
     }
 }

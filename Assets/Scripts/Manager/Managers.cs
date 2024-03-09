@@ -11,10 +11,12 @@ public class Managers : MonoBehaviour
 
     private static ResourceManager s_resourceManager = new ResourceManager();
     private static UIManager s_uiManager = new UIManager();
+    private static SoundManager s_soundManager = new SoundManager();
     private static GameManager s_gameManager = new GameManager();
     
     public static ResourceManager Resource { get { Init(); return s_resourceManager; }}
     public static UIManager UI { get { Init(); return s_uiManager; }}
+    public static SoundManager Sound { get { Init(); return s_soundManager; }}
     public static GameManager Game { get { Init(); return s_gameManager; }}
     
     private void Start()
@@ -34,6 +36,7 @@ public class Managers : MonoBehaviour
             DontDestroyOnLoad(go);
             
             s_resourceManager.Init();
+            s_soundManager.Init();
         }
     }
 }
