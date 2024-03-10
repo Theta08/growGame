@@ -3,74 +3,41 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[Serializable]
-public class GameData
+public class GameManager
 {
-    public string Name;
-
-    public int Hp;
-    public int MaxHp;
-    public int Stress;
-
-    public int Money;
-    public float PlayTime;
-
-
- }
-
-public class GameManager 
-{
-    GameData _gameData = new GameData();
-
-    #region 스텟
-    public string Name
-    {
-        get { return _gameData.Name; }
-        set { _gameData.Name = value; }
-    }
+    private string _playerName;
     
-    public int Hp
-    {
-        get { return _gameData.Hp; }
-        set { _gameData.Hp = value; }
-    }
+    private HeroKnightController _gameData;
     
-    public int MaxHp
-    {
-        get { return _gameData.MaxHp; }
-        set { _gameData.MaxHp = value; }
-    }
-    
-    public int Stress
-    {
-        get { return _gameData.Stress; }
-        set { _gameData.Stress = value; }
-    }
-    #endregion
-
-    #region 돈
-    public int Money
-    {
-        get { return _gameData.Money; }
-        set { _gameData.Money = value; }
-    }
-    #endregion
-
-    #region 시간
-    public float PlayTime
-    {
-        get { return _gameData.PlayTime; }
-        set { _gameData.PlayTime = value; }
-    }
-    #endregion
+    public HeroKnightController PlayerInfo { get { return _gameData; } set { _gameData = value; } }
+    public String PlayerName { get { return _playerName; } set { _playerName = value; } }
     
     public void Init()
     {
-        // 스텟 설정
+        
+    }
+    
+    public GameObject Spawn(Define.WorldObject type, string path, Transform parent = null)
+    {
+        GameObject go = Managers.Resource.Instantiate(path, parent);
 
-        Name = "NoName";
-        PlayTime = 0.0f;
+        switch (type)
+        {
+            case Define.WorldObject.Monster:
+                // _monsters.Add(go);
+                // if (OnSpawnEvent != null)
+                //     OnSpawnEvent.Invoke(1);
+                break;
+            case Define.WorldObject.Player:
+                // go.GetComponent<PlayerController>().MyPlay = false;
+                break;
+            default:
+                // _monsters.Add(go);
+                // if (OnSpawnEvent != null)
+                    // OnSpawnEvent.Invoke(1);
+                break;
+        }
 
-        Hp = MaxHp;
+        return go;
     }
 }

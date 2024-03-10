@@ -59,7 +59,7 @@ public class SoundManager
 
     public bool Play(Define.Sound type, string path, float volume = 1.0f, float pitch = 1.0f)
     {
-        if (string.IsNullOrEmpty(path) == null)
+        if (string.IsNullOrEmpty(path))
             return false;
 
         AudioSource audioSource = _audioSources[(int)type];

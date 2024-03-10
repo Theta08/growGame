@@ -46,7 +46,6 @@ public class UI_NamePopup : UI_Popup
     {
         GetText((int)Texts.NameText).text = "";
         GetText((int)Texts.HintText).text = "이름입력";
-        
     }
     
     void OnClickConfirmButton()
@@ -54,7 +53,8 @@ public class UI_NamePopup : UI_Popup
         Managers.Sound.Play(Define.Sound.Effect, "Sound_MainButton");
         
         Debug.Log("ConfirmButton 실행!");
-        Managers.Game.Name = _inputField.text;
+        // Managers.Game.Name = _inputField.text;
+        Managers.Game.PlayerName = _inputField.text;
         
         Debug.Log($"name : {_inputField.text}");
         

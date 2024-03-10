@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class Define 
 {
+    public enum WorldObject
+    {
+        Unknown,
+        Player,
+        Monster,
+    }
+    
     public enum UIEvent
     {
         Click,
@@ -25,5 +32,23 @@ public class Define
         Unknown,
         Dev,
         Game,
+    }
+
+    public enum ObjectType
+    {
+        Unknown,
+        Player,
+        Monster,
+    }
+    
+    public enum State
+    {
+        Idle,
+        Moving,
+        Die,
+        Damage,
+        Attack1,
+        Attack2,
+        Attack3,
     }
 }
