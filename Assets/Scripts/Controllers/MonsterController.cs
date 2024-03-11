@@ -18,7 +18,7 @@ public class MonsterController : BaseController
         State = Define.State.Idle;
         
         if (gameObject.GetComponentInChildren<UI_HPBar>() == null)
-            Managers.UI.MakeWorldSpaceUI<UI_HPBar>(transform);
+            Managers.UI.MakeWorldSpace<UI_HPBar>(transform);
         
         return true;
     }

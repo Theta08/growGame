@@ -54,12 +54,12 @@ public class UIManager
         return Utils.GetOrAddComponent<T>(go);
     }
     
-    public T MakeWorldSpaceUI<T>(Transform parent = null, string name = null) where T : UI_Base
+    public T MakeWorldSpace<T>(Transform parent = null, string name = null) where T : UI_Base
     {
         if (string.IsNullOrEmpty(name))
             name = typeof(T).Name;
 
-        GameObject prefab = Managers.Resource.Load<GameObject>($"Prefabs/UI/WorldSpaceUI/{name}");
+        GameObject prefab = Managers.Resource.Load<GameObject>($"Prefabs/UI/WorldSpace/{name}");
         GameObject go = Managers.Resource.Instantiate(prefab);
         
         if(parent != null)

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
@@ -27,11 +28,16 @@ public class Stat: MonoBehaviour
     
     private void Start()
     {
-        _hp = 10;
+        _hp = 100;
         _maxHp = _hp;
         _attack = 3;
 
         Name = gameObject.GetComponent<BaseController>().gameObject.name;
+    }
+
+    private void OnEnable()
+    {
+        _hp = _maxHp;
     }
 
     public virtual void OnAttacked(Stat attacker)
@@ -40,6 +46,7 @@ public class Stat: MonoBehaviour
         Hp -= damage;
         
         // 데미지 표시
+        Managers.UI.MakeWorldSpace<UI_DamageText>(transform).SetDamage = damage;
 
         if (Hp <= 0)
         {
