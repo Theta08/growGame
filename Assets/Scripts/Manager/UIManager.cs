@@ -54,6 +54,27 @@ public class UIManager
         return Utils.GetOrAddComponent<T>(go);
     }
     
+    public T MakeWorldSpaceUI<T>(Transform parent = null, string name = null) where T : UI_Base
+    {
+        if (string.IsNullOrEmpty(name))
+            name = typeof(T).Name;
+
+        GameObject prefab = Managers.Resource.Load<GameObject>($"Prefabs/UI/WorldSpaceUI/{name}");
+        GameObject go = Managers.Resource.Instantiate(prefab);
+        
+        if(parent != null)
+            go.transform.SetParent(parent);
+
+        Canvas canvas = go.GetOrAddComponent<Canvas>();
+        canvas.renderMode = RenderMode.WorldSpace;
+        canvas.worldCamera = Camera.main;
+        
+        // go.transform.localScale = Vector3.zero;
+        go.transform.localPosition = prefab.transform.position;
+
+        return Utils.GetOrAddComponent<T>(go);
+    }
+    
     //Scene ...
     public T ShowPopupUI<T>(string name = null, Transform parent = null) where T : UI_Popup
     {

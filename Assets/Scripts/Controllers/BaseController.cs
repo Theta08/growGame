@@ -1,14 +1,15 @@
+using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using Random = UnityEngine.Random;
 
 public abstract class BaseController : MonoBehaviour
 {
     // [SerializeField]
     // protected Vector3 _destPos;
-    // [SerializeField]
-    // protected GameObject _lockTarget;
+    [SerializeField]
+    protected GameObject _lockTarget;
     [SerializeField]
     protected LayerMask targetLayer;
     [SerializeField]
@@ -31,7 +32,7 @@ public abstract class BaseController : MonoBehaviour
             switch (_state)
             {
                 case Define.State.Idle:
-                    anim.CrossFade("IDLE",0.1f);
+                    anim.CrossFade("Idle",0.1f);
                     break;
                 case Define.State.Attack1:
                     anim.CrossFade("Attack1", 0.1f, -1, 0);
@@ -88,5 +89,35 @@ public abstract class BaseController : MonoBehaviour
     {
         get { return _stat; }
         set { _stat = value; }
+    }
+    
+    protected void GetNearest()
+    {
+        Collider2D collider = Physics2D.OverlapBox(transform.position, new Vector2(2,2), 0, targetLayer);
+        
+        if (collider == null)
+            return;
+        
+        _lockTarget = collider.gameObject;
+
+        if (ObjectType == Define.ObjectType.Player)
+        {
+            int randomAttack = Random.Range(4, 7);
+            State = (Define.State)randomAttack;
+        }
+        else
+            State = Define.State.Attack1;
+    }
+    
+    // 공격
+    void Attack()
+    {
+        Stat targetStat = _lockTarget.GetComponent<Stat>();
+        targetStat.OnAttacked(_stat);
+        
+        string attack = "Sound_Attack";
+        Managers.Sound.Play(Define.Sound.Effect, attack);
+     
+        State = Define.State.Idle;
     }
 }

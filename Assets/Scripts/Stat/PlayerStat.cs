@@ -20,9 +20,9 @@ public class PlayerStat : Stat
     
     private void Start()
     {
-        _hp = 40;
+        _hp = 30;
         _maxHp = _hp;
-        _attack = 10;
+        _attack = 3;
         _name = "playerName";
         _playTime = 0.0f;
     }

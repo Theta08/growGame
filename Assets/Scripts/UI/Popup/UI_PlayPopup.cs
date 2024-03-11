@@ -22,6 +22,7 @@ public class UI_PlayPopup : UI_Popup
         BindText(typeof(Texts));
         
         GameObject go = Managers.Resource.Instantiate("Player/HeroKnight");
+        GameObject go1 = Managers.Resource.Instantiate("Enemies/Bat");
         go.transform.position = new Vector2(-1, 0);
         
         RefreshUI();

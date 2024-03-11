@@ -33,7 +33,7 @@ public class UI_TitlePopup : UI_Popup
         GetText((int)Texts.StartButtonText2).text = "시작하기2";
 
         Managers.Sound.Clear();
-        Managers.Sound.Play(Define.Sound.Bgm, "Sound_MainTitle", 0.5f);
+        Managers.Sound.Play(Define.Sound.Bgm, "Sound_MainTitle", 0.25f);
         return true;
     }
  
