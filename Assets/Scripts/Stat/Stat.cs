@@ -16,8 +16,13 @@ public class Stat: MonoBehaviour
     protected Define.ObjectType _type;
     [SerializeField] 
     public string _name;
+    [SerializeField] 
+    private int _money;
+    
+    private BaseController myObject;
     
     public string Name { get { return _name; } set { _name = value; } }
+    public int Money { get { return _money; } set { _money = value; } }
     public Define.ObjectType Type { get { return _type; } set { _type = value; } }
     
     #region 스텟
@@ -28,10 +33,9 @@ public class Stat: MonoBehaviour
     
     private void Start()
     {
-        _hp = 100;
+        _hp = 10;
         _maxHp = _hp;
         _attack = 3;
-
         Name = gameObject.GetComponent<BaseController>().gameObject.name;
     }
 
@@ -40,24 +44,38 @@ public class Stat: MonoBehaviour
         _hp = _maxHp;
     }
 
-    public virtual void OnAttacked(Stat attacker)
+    public void OnAttacked(Stat attacker)
     {
         int damage = Mathf.Max(0, attacker.Attack);
         Hp -= damage;
+     
+        string attack = "Sound_Attack";
+        Managers.Sound.Play(Define.Sound.Effect, attack);
         
         // 데미지 표시
         Managers.UI.MakeWorldSpace<UI_DamageText>(transform).SetDamage = damage;
 
+        // if (Type == Define.ObjectType.Monster)
+        //     myObject.State = Define.State.Hit;
+        
         if (Hp <= 0)
         {
             Hp = 0;
+            
+            // 플레이어 돈 증가
+            if (attacker.Type == Define.ObjectType.Player)
+            {
+                Managers.Game.Money += Money;
+                attacker.Money = Managers.Game.Money;
+            }
             OnDead();
         }
     }
 
     public virtual void OnDead()
     {
-        BaseController myObject = gameObject.GetComponent<BaseController>();
+        // Debug.Log("Dead");
+        myObject = gameObject.GetComponent<BaseController>();
         myObject.State = Define.State.Die;
     }
 }

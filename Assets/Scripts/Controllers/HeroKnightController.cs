@@ -15,8 +15,11 @@ public class HeroKnightController : BaseController
         
         _stat =  gameObject.GetOrAddComponent<PlayerStat>();
         _stat.Name = Managers.Game.PlayerName;
-        _stat.Type = ObjectType;
         
+        // TODO save시 값 받아와야함
+        _stat.Money = 0;
+        _stat.Type = ObjectType;
+
         State = Define.State.Idle;
 
         if (gameObject.GetComponentInChildren<UI_HPBar>() == null)

@@ -34,6 +34,9 @@ public abstract class BaseController : MonoBehaviour
                 case Define.State.Idle:
                     anim.CrossFade("Idle",0.1f);
                     break;
+                case Define.State.Attack:
+                    anim.CrossFade("Attack", 0.1f, -1, 0);
+                    break;
                 case Define.State.Attack1:
                     anim.CrossFade("Attack1", 0.1f, -1, 0);
                     break;
@@ -45,6 +48,9 @@ public abstract class BaseController : MonoBehaviour
                     break;
                 case Define.State.Die:
                     anim.CrossFade("Die", 0.1f);
+                    break;
+                case Define.State.Hit:
+                    anim.CrossFade("Hit", 0.1f);
                     break;
             }
         }
@@ -62,10 +68,13 @@ public abstract class BaseController : MonoBehaviour
             case Define.State.Idle:
                 UpdateIdle();
                 break;
+            case Define.State.Attack:
             case Define.State.Attack1:
             case Define.State.Attack2:
             case Define.State.Attack3:
                 UpdateAttck();
+                break;
+            case Define.State.Hit:
                 break;
             case Define.State.Die:
                 UpdateDie();
@@ -76,6 +85,7 @@ public abstract class BaseController : MonoBehaviour
     protected virtual void UpdateIdle() { }
     protected virtual void UpdateAttck() { }
     protected virtual void UpdateDie() { }
+    protected virtual void UpdateHit() { }
 
     public virtual bool Init()
     {
@@ -93,20 +103,23 @@ public abstract class BaseController : MonoBehaviour
     
     protected void GetNearest()
     {
-        Collider2D collider = Physics2D.OverlapBox(transform.position, new Vector2(2,2), 0, targetLayer);
+        Collider2D collider = Physics2D.OverlapBox(transform.position, new Vector2(3,3), 0, targetLayer);
         
         if (collider == null)
             return;
         
         _lockTarget = collider.gameObject;
 
+        if (_lockTarget.GetComponent<Stat>().Hp <= 0)
+            return;
+        
         if (ObjectType == Define.ObjectType.Player)
         {
-            int randomAttack = Random.Range(4, 7);
+            int randomAttack = Random.Range(5, 8);
             State = (Define.State)randomAttack;
         }
         else
-            State = Define.State.Attack1;
+            State = Define.State.Attack;
     }
     
     // 공격
@@ -115,9 +128,12 @@ public abstract class BaseController : MonoBehaviour
         Stat targetStat = _lockTarget.GetComponent<Stat>();
         targetStat.OnAttacked(_stat);
         
-        string attack = "Sound_Attack";
-        Managers.Sound.Play(Define.Sound.Effect, attack);
-     
         State = Define.State.Idle;
+    }
+
+    void Hit()
+    {
+        // GetNearest();
+        // State = Define.State.Idle;
     }
 }

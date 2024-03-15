@@ -10,10 +10,12 @@ public class MonsterController : BaseController
             return false;
         
         ObjectType = Define.ObjectType.Monster;
+        // gameObject.layer = LayerMask.GetMask(ObjectType.ToString());
         targetLayer = LayerMask.GetMask("Player");
         
         _stat =  gameObject.GetOrAddComponent<Stat>();
         _stat.Type = ObjectType;
+        _stat.Money = 5;
         
         State = Define.State.Idle;
         
@@ -22,4 +24,10 @@ public class MonsterController : BaseController
         
         return true;
     }
+
+    protected override void UpdateIdle()
+    {
+        GetNearest();
+    }
+    
 }
