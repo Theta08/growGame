@@ -10,7 +10,18 @@ public class ResourceManager
     {
         if (typeof(T) == typeof(Sprite))
         {
-            
+        }
+        
+        if (typeof(T) == typeof(GameObject))
+        {
+            string name = path;
+            int index = name.LastIndexOf('/');
+            if (index >= 0)
+                name = name.Substring(index + 1);
+
+            GameObject go = Managers.Pool.GetOriginal(name);
+            if (go != null)
+                return go as T;
         }
         
         return Resources.Load<T>(path);
@@ -31,6 +42,9 @@ public class ResourceManager
 
     public GameObject Instantiate(GameObject prefab, Transform parent = null)
     {
+        if (prefab.GetComponent<Poolable>() != null)
+            return Managers.Pool.Pop(prefab, parent).gameObject;
+        
         GameObject go = Object.Instantiate(prefab, parent);
         go.name = prefab.name;
         return go;
@@ -40,6 +54,13 @@ public class ResourceManager
     {
         if (go == null)
             return;
+
+        Poolable poolable = go.GetComponent<Poolable>();
+        if (poolable != null)
+        {
+            Managers.Pool.Push(poolable);
+            return;
+        }
         
         Object.Destroy(go);
     }

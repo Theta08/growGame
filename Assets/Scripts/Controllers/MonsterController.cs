@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -24,10 +25,13 @@ public class MonsterController : BaseController
         
         return true;
     }
-
     protected override void UpdateIdle()
     {
         GetNearest();
     }
-    
+
+    protected override void UpdateDie()
+    {
+        Managers.Resource.Destroy(gameObject);
+    }
 }

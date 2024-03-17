@@ -61,6 +61,12 @@ public abstract class BaseController : MonoBehaviour
         Init();
     }
 
+    private void OnEnable()
+    {
+        State = Define.State.Idle;
+    }
+
+    
     private void Update()
     {
         switch (State)
@@ -77,7 +83,7 @@ public abstract class BaseController : MonoBehaviour
             case Define.State.Hit:
                 break;
             case Define.State.Die:
-                UpdateDie();
+                Invoke("UpdateDie", 0.6f);
                 break;
         }
     }

@@ -19,7 +19,7 @@ public class PlayerStat : Stat
     
     private void Start()
     {
-        _hp = 30;
+        _hp = 300;
         _maxHp = _hp;
         _attack = 3;
         // _name = "";

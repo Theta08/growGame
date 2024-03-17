@@ -20,9 +20,14 @@ public class UI_HPBar : UI_Base
         
         BindObject(typeof(GameObjects));
 
-        _stat = transform.parent.GetComponent<Stat>();
+        // _stat = transform.parent.GetComponent<Stat>();
         
         return true;
+    }
+
+    private void OnEnable()
+    {
+        _stat = transform.parent.GetComponent<Stat>();
     }
 
     private void Update()
