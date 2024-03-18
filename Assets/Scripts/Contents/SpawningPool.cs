@@ -9,9 +9,11 @@ public class SpawningPool : MonoBehaviour
     int _reserveCount = 0;
     [SerializeField]
     int _keepMonsterCount = 0;
+    
     [SerializeField]
-    float _spawnTime = 0.5f;
+    float _spawnTime = 0.7f;
     public void AddMonsterCount(int value) { _monsterCount += value; }
+    public void SetKeepMonsterCount(int count) { _keepMonsterCount = count; }
     
     void Start()
     {
@@ -27,12 +29,13 @@ public class SpawningPool : MonoBehaviour
     
     IEnumerator ReserveSpawn()
     {
-        string monsterName = "";
+        // 임시 
+        string monsterName = "Enemies/Goblin";
         _reserveCount++;
         
         yield return new WaitForSeconds(_spawnTime); 
         
-        GameObject obj = Managers.Game.Spawn(Define.WorldObject.Monster, monsterName);
+        GameObject obj = Managers.Game.Spawn(Define.ObjectType.Monster, monsterName);
         
         // obj.transform.position = randPos;
         _reserveCount--;

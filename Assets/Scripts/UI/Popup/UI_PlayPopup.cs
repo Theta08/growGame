@@ -24,9 +24,16 @@ public class UI_PlayPopup : UI_Popup
         
         BindText(typeof(Texts));
 
-        GameObject go = Managers.Resource.Instantiate("Player/HeroKnight");
-        GameObject go1 = Managers.Resource.Instantiate("Enemies/Goblin");
-        go.transform.position = new Vector2(-1, 0);
+        GameObject player = Managers.Game.Spawn(Define.ObjectType.Player, "Player/HeroKnight");
+        
+        // GameObject go1 = Managers.Resource.Instantiate("Enemies/Goblin");
+
+        GameObject go = new GameObject { name = "SpawningPool" };
+        SpawningPool pool = go.GetOrAddComponent<SpawningPool>();
+        
+        pool.SetKeepMonsterCount(1);
+        
+        player.transform.position = new Vector2(-1, 0);
         
         RefreshUI();
         

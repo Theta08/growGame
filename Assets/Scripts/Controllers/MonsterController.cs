@@ -32,6 +32,6 @@ public class MonsterController : BaseController
 
     protected override void UpdateDie()
     {
-        Managers.Resource.Destroy(gameObject);
+        Managers.Game.Despawn(gameObject);
     }
 }

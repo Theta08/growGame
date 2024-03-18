@@ -90,7 +90,7 @@ public abstract class BaseController : MonoBehaviour
 
     protected virtual void UpdateIdle() { }
     protected virtual void UpdateAttck() { }
-    protected virtual void UpdateDie() { }
+    protected virtual void UpdateDie() {}
     protected virtual void UpdateHit() { }
 
     public virtual bool Init()
