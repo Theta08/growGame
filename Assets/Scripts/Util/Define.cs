@@ -45,4 +45,11 @@ public class Define
         Attack2,
         Attack3,
     }
+    
+    public enum StatType
+    {
+        MaxHp,
+        Def,
+        Attack
+    }
 }

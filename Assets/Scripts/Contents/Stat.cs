@@ -9,6 +9,8 @@ public class Stat: MonoBehaviour
     [SerializeField]
     protected int _hp;
     [SerializeField]
+    protected int _def;
+    [SerializeField]
     protected int _attack;
     protected int _maxHp;
     
@@ -34,8 +36,9 @@ public class Stat: MonoBehaviour
     private void Start()
     {
         _hp = 10;
-        _maxHp = _hp;
+        _def = 0;
         _attack = 3;
+        _maxHp = _hp;
         Name = gameObject.GetComponent<BaseController>().gameObject.name;
     }
 
@@ -46,7 +49,7 @@ public class Stat: MonoBehaviour
 
     public void OnAttacked(Stat attacker)
     {
-        int damage = Mathf.Max(0, attacker.Attack);
+        int damage = Mathf.Max(0, attacker.Attack - _def);
         Hp -= damage;
      
         string attack = "Sound_Attack";

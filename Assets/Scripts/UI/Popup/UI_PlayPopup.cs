@@ -8,7 +8,6 @@ public class UI_PlayPopup : UI_Popup
 
     enum GameObjects
     {
-        
     }
     
     enum Texts
@@ -16,24 +15,41 @@ public class UI_PlayPopup : UI_Popup
         NameText,
         Timer,
         Money,
+        GameDrawText
     }
+
+    enum Buttons
+    {
+        StatButton,
+        GameDraw,
+    }
+    
+    enum AbilityItems
+    {
+        UI_AbilityItem_MaxHp,
+        UI_AbilityItem_Attack, 
+        UI_AbilityItem_Def,
+    }
+    
     public override bool Init()
     {
         if (base.Init() == false)
             return false;
         
         BindText(typeof(Texts));
-
-        GameObject player = Managers.Game.Spawn(Define.ObjectType.Player, "Player/HeroKnight");
+        BindButton(typeof(Buttons));
+        Bind<UI_AbilityItem>(typeof(AbilityItems));
         
-        // GameObject go1 = Managers.Resource.Instantiate("Enemies/Goblin");
-
-        GameObject go = new GameObject { name = "SpawningPool" };
-        SpawningPool pool = go.GetOrAddComponent<SpawningPool>();
+        GetText((int)Texts.NameText).text = Managers.Game.PlayerName;
         
-        pool.SetKeepMonsterCount(1);
+        GetButton((int)Buttons.StatButton).gameObject.BindEvent( () => Debug.Log($"스텟 버튼"));
+        GetButton((int)Buttons.GameDraw).gameObject.BindEvent( () => Debug.Log($"뽑기 버튼"));
         
-        player.transform.position = new Vector2(-1, 0);
+        Get<UI_AbilityItem>((int)AbilityItems.UI_AbilityItem_MaxHp).SetInfo(Define.StatType.MaxHp);
+        Get<UI_AbilityItem>((int)AbilityItems.UI_AbilityItem_Attack).SetInfo(Define.StatType.Attack);
+        Get<UI_AbilityItem>((int)AbilityItems.UI_AbilityItem_Def).SetInfo(Define.StatType.Def);
+        
+        Setting();
         
         RefreshUI();
         
@@ -47,9 +63,27 @@ public class UI_PlayPopup : UI_Popup
 
     public void RefreshUI()
     {
-        GetText((int)Texts.NameText).text = Managers.Game.PlayerName;
         // GetText((int)Texts.Timer).text = Managers.Game.PlayerName;
         GetText((int)Texts.Money).text = Managers.Game.Money.ToString("D");
-
     }
+
+    void OnTestClick()
+    {
+        Debug.Log("OnTestClick");
+    }
+    void Setting()
+    {
+        GameObject player = Managers.Game.Spawn(Define.ObjectType.Player, "Player/HeroKnight");
+        
+        Canvas canvas = gameObject.GetOrAddComponent<Canvas>();
+        canvas.renderMode = RenderMode.ScreenSpaceCamera;
+        canvas.worldCamera = Camera.main;
+        
+        GameObject go = new GameObject { name = "SpawningPool" };
+        SpawningPool pool = go.GetOrAddComponent<SpawningPool>();
+        
+        pool.SetKeepMonsterCount(1);
+        
+        player.transform.position = new Vector2(-1, 0);
+    }    
 }
