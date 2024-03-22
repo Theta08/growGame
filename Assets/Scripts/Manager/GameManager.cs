@@ -1,33 +1,34 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Net;
+using Newtonsoft.Json;
 using UnityEngine;
+using UnityEngine.Timeline;
 
-[Serializable]
-public class GameData
-{
-    public int _money;
-    public float _playTime;
-}
+
+
 
 public class GameManager
 {
     GameData _gameData = new GameData();
+    public GameData SaveData { get { return _gameData; } set { _gameData = value; } }
+    
     GameObject _player;
     HashSet<GameObject> _monsters = new HashSet<GameObject>();
-    
     private string _playerName;
     private HeroKnightController _playerData;
    
     public Action<int> OnSpawnEvent;
-    public GameObject GetPlayer() { return _player; }
+    public GameObject GetPlayer{ get {return _player;} set { _player = value; } }
     
     public HeroKnightController PlayerInfo { get { return _playerData; } set { _playerData = value; } }
-    public String PlayerName { get { return _playerName; } set { _playerName = value; } }
-
-    #region 스텟
-    public int Money { get { return _gameData._money; } set { _gameData._money = value; } }
-    #endregion
+    // public String PlayerName { get { return _playerName; } set { _playerName = value; } }
+    //
+    // #region 스텟
+    // public int Money { get { return _gameData.Money; } set { _gameData.Money = value; } }
+    // #endregion
    
     public void Init()
     {
@@ -88,4 +89,37 @@ public class GameManager
         
         Managers.Resource.Destroy(go);
     }
+
+    public void RefreshPlayerData()
+    {
+        GetPlayer.GetComponent<HeroKnightController>().RefreshStat();
+    }
+    
+    #region Save & Load
+    public string _path = Application.persistentDataPath + "/SaveData.json";
+
+    public void SaveGame()
+    {
+        string jsonStr = JsonUtility.ToJson(Managers.Game.SaveData);
+        // string jsonStr = JsonConvert.SerializeObject(Managers.Game.SaveData);
+        File.WriteAllText(_path, jsonStr);
+        Debug.Log($"Save Game Completed {_path}");
+    }
+
+    public bool LoadGame()
+    {
+        if (File.Exists(_path) == false)
+            return false;
+
+        string fileStr = File.ReadAllText(_path);
+        GameData data = JsonUtility.FromJson<GameData>(fileStr);
+
+        if (data != null)
+            Managers.Game.SaveData = data;
+        
+        Debug.Log($"Save Game Load {_path}");
+
+        return true;
+    }
+    #endregion
 }

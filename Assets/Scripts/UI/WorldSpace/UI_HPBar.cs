@@ -45,4 +45,9 @@ public class UI_HPBar : UI_Base
 
         GetObject((int)GameObjects.HPBar).GetComponent<Slider>().value = hpBar;
     }
+
+    public void RefeshUI()
+    {
+        _stat = transform.parent.GetComponent<Stat>();
+    }
 }

@@ -40,7 +40,8 @@ public class UI_PlayPopup : UI_Popup
         BindButton(typeof(Buttons));
         Bind<UI_AbilityItem>(typeof(AbilityItems));
         
-        GetText((int)Texts.NameText).text = Managers.Game.PlayerName;
+        Setting();
+        GetText((int)Texts.NameText).text = Managers.Game.SaveData.Name;
         
         GetButton((int)Buttons.StatButton).gameObject.BindEvent( () => Debug.Log($"스텟 버튼"));
         GetButton((int)Buttons.GameDraw).gameObject.BindEvent( () => Debug.Log($"뽑기 버튼"));
@@ -49,9 +50,9 @@ public class UI_PlayPopup : UI_Popup
         Get<UI_AbilityItem>((int)AbilityItems.UI_AbilityItem_Attack).SetInfo(Define.StatType.Attack);
         Get<UI_AbilityItem>((int)AbilityItems.UI_AbilityItem_Def).SetInfo(Define.StatType.Def);
         
-        Setting();
-        
         RefreshUI();
+
+        StartCoroutine(CoSave(3.0f));
         
         return true;
     }
@@ -64,7 +65,7 @@ public class UI_PlayPopup : UI_Popup
     public void RefreshUI()
     {
         // GetText((int)Texts.Timer).text = Managers.Game.PlayerName;
-        GetText((int)Texts.Money).text = Managers.Game.Money.ToString("D");
+        GetText((int)Texts.Money).text = Managers.Game.SaveData.Money.ToString("D");
     }
 
     void OnTestClick()
@@ -85,5 +86,19 @@ public class UI_PlayPopup : UI_Popup
         pool.SetKeepMonsterCount(1);
         
         player.transform.position = new Vector2(-1, 0);
-    }    
+
+        if(Managers.Game.SaveData.Reset)
+            Managers.Game.SaveData.Reset = false;
+
+        Managers.Game.LoadGame();
+    }
+
+    IEnumerator CoSave(float interval)
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(interval);
+            Managers.Game.SaveGame();
+        }
+    }
 }

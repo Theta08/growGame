@@ -14,10 +14,9 @@ public class HeroKnightController : BaseController
         targetLayer = LayerMask.GetMask("Monster");
         
         _stat =  gameObject.GetOrAddComponent<PlayerStat>();
-        _stat.Name = Managers.Game.PlayerName;
+        _stat.Name = Managers.Game.SaveData.Name;
         
         // TODO save시 값 받아와야함
-        _stat.Money = 0;
         _stat.Type = ObjectType;
 
         State = Define.State.Idle;
@@ -25,9 +24,15 @@ public class HeroKnightController : BaseController
         if (gameObject.GetComponentInChildren<UI_HPBar>() == null)
             Managers.UI.MakeWorldSpace<UI_HPBar>(transform);
         
-        Managers.Game.PlayerInfo = gameObject.GetComponent<HeroKnightController>();
+        Managers.Game.GetPlayer = gameObject;
         
         return true;
+    }
+
+    public void RefreshStat()
+    {
+        _stat.GetPlayerStat(Managers.Game.SaveData);
+        gameObject.GetComponentInChildren<UI_HPBar>().RefeshUI();
     }
     
     protected override void UpdateIdle()

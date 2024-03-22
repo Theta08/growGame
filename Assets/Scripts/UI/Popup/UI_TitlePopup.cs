@@ -27,13 +27,21 @@ public class UI_TitlePopup : UI_Popup
         BindButton(typeof(Buttons));
 
         GetButton((int)Buttons.StartButton).gameObject.BindEvent(OnClickStartButton);
-        GetButton((int)Buttons.StartButton2).gameObject.BindEvent(OnClickStartButton2);
-
-        GetText((int)Texts.StartButtonText).text = "시작하기";
-        GetText((int)Texts.StartButtonText2).text = "시작하기2";
-
+        GetButton((int)Buttons.StartButton2).gameObject.BindEvent(OnClickLoadButton);
+        
+        GetText((int)Texts.StartButtonText).text = "새로하기";
+        
         Managers.Sound.Clear();
         Managers.Sound.Play(Define.Sound.Bgm, "Sound_MainTitle", 0.25f);
+
+        if (Managers.Game.LoadGame())
+        {
+            GetButton((int)Buttons.StartButton2).gameObject.SetActive(true);
+            GetText((int)Texts.StartButtonText2).text = "불러오기";
+        }
+        else
+            GetButton((int)Buttons.StartButton2).gameObject.SetActive(false);
+
         return true;
     }
  
@@ -43,17 +51,17 @@ public class UI_TitlePopup : UI_Popup
 
         Managers.Sound.Play(Define.Sound.Effect, "Sound_MainButton");
         
-        // TODO 게임저장 시스템 구현 해야함
-        // if(Managers.Game.LoadGame())
-        
         Managers.Game.Init();
+        Managers.Game.SaveData.Reset = true;
         
         Managers.UI.ClosePopupUI(this);
         Managers.UI.ShowPopupUI<UI_NamePopup>();
     }
     
-    void OnClickStartButton2()
+    void OnClickLoadButton()
     {
-        Debug.Log("OnClickStartButton2");
+        Debug.Log("OnClickLoadButton");
+        Managers.UI.ClosePopupUI(this);
+        Managers.UI.ShowPopupUI<UI_PlayPopup>();
     }
 }

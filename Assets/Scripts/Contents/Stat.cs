@@ -1,7 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class Stat: MonoBehaviour
@@ -17,9 +13,9 @@ public class Stat: MonoBehaviour
     [SerializeField]
     protected Define.ObjectType _type;
     [SerializeField] 
-    public string _name;
+    protected int _money;
     [SerializeField] 
-    private int _money;
+    public string _name;
     
     private BaseController myObject;
     
@@ -31,6 +27,7 @@ public class Stat: MonoBehaviour
     public int Hp { get { return _hp; } set { _hp = value; } }
     public int MaxHp { get { return _maxHp; } set { _maxHp = value; } }
     public int Attack { get { return _attack; } set { _attack = value; } }
+    public int Def { get { return _def; } set { _def = value; } }
     #endregion
     
     private void Start()
@@ -49,7 +46,7 @@ public class Stat: MonoBehaviour
 
     public void OnAttacked(Stat attacker)
     {
-        int damage = Mathf.Max(0, attacker.Attack - _def);
+        int damage = Mathf.Max(0, attacker.Attack - Def);
         Hp -= damage;
      
         string attack = "Sound_Attack";
@@ -67,10 +64,9 @@ public class Stat: MonoBehaviour
             
             // 플레이어 돈 증가
             if (attacker.Type == Define.ObjectType.Player)
-            {
-                Managers.Game.Money += Money;
-                attacker.Money = Managers.Game.Money;
-            }
+                Managers.Game.SaveData.Money += Money;
+                // attacker.Money = Managers.Game.SaveData.Money;
+            
             OnDead();
         }
     }
@@ -81,4 +77,5 @@ public class Stat: MonoBehaviour
         myObject = gameObject.GetComponent<BaseController>();
         myObject.State = Define.State.Die;
     }
+    public virtual void GetPlayerStat(GameData gameData){}
 }

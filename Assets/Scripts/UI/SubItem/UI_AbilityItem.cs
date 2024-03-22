@@ -9,9 +9,6 @@ public class UI_AbilityItem : UI_Base
         TitleText,
         ChangeText,
         UpgradeMoneyText,
-        // DiffText,
-        // UpgradeText,
-        // MoneyText
     }
     
     enum Buttons
@@ -20,6 +17,7 @@ public class UI_AbilityItem : UI_Base
     }
 
     Define.StatType _statType;
+    private int _pay = 10;
     
     public override bool Init()
     {
@@ -41,10 +39,6 @@ public class UI_AbilityItem : UI_Base
     public void SetInfo(Define.StatType statType)
     {
         _statType = statType;
-
-        // gameObject.GetOrAddComponent<UI_AbilityItem>();
-        // int id = GetStatUpradId(_statType);
-         
         RefreshUI();
     }
     
@@ -53,36 +47,52 @@ public class UI_AbilityItem : UI_Base
         if (_init == false)
             return;
 
-        //_statType
+        _pay += Managers.Game.SaveData.SelectUpgradeCount(_statType);
+        
+        GetUpradeSetting();
 
         GetText((int)Texts.TitleText).text = $"{_statType.ToString()} 증가";
-        GetText((int)Texts.ChangeText).text = $"Test 5 > 10";
-        GetText((int)Texts.UpgradeMoneyText).text = $"Test 100";
-        
-        
-        // data setting...
+        GetText((int)Texts.ChangeText).text =$"{GetUpradeSetting()}" ;
+        GetText((int)Texts.UpgradeMoneyText).text = $"{_pay}";
 
     }
 
-    int GetStatUpradId(Define.StatType statType)
+    string GetUpradeSetting()
     {
+        string currentStat = "";
         switch (_statType)
         {
             case Define.StatType.MaxHp:
-                return 1;
-            
+                currentStat = Managers.Game.SaveData.MaxHp.ToString();
+                break;
+            case Define.StatType.Attack:
+                currentStat = Managers.Game.SaveData.Attack.ToString();
+                break;
+            case Define.StatType.Def:
+                currentStat = Managers.Game.SaveData.Def.ToString();
+                break;
         }
-
-        return 0;
+        
+       return $"{currentStat} > " +
+              $"{Managers.Game.SaveData.NextUpgradeInt(_statType).ToString()}";
     }
 
     void OnUpgradeButton()
     {
         Debug.Log("OnUpgradeButton");
 
-        if (Managers.Game.Money < 10)
+        if (Managers.Game.SaveData.Money < _pay)
+        {
+            Debug.Log($"돈 {_pay - Managers.Game.SaveData.Money} 부족합니다.");
             return;
-
-        Managers.Game.Money -= 10;
+        }
+        
+        Managers.Game.SaveData.Money -= _pay;
+        Managers.Game.SaveData.NextUpgrade(_statType);
+        Managers.Game.RefreshPlayerData();
+        
+        _pay += Managers.Game.SaveData.SelectUpgradeCount(_statType);
+        
+        RefreshUI();
     }
 }
