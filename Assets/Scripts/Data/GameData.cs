@@ -137,7 +137,6 @@ public class GameData
                 break;
         }
     }
-    
     public void ChangRank(Define.StatType statType, int rank)
     {
         switch (statType)

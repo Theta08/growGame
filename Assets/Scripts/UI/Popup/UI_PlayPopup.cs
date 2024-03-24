@@ -6,30 +6,26 @@ using UnityEngine;
 public class UI_PlayPopup : UI_Popup
 {
 
-    enum GameObjects
-    {
-    }
-    
+    enum GameObjects { }
     enum Texts
     {
         NameText,
         Timer,
         Money,
-        GameDrawText
+        MoneyDrawText
     }
-
     enum Buttons
     {
-        StatButton,
         GameDraw,
     }
-    
     enum AbilityItems
     {
         UI_AbilityItem_MaxHp,
         UI_AbilityItem_Attack, 
         UI_AbilityItem_Def,
     }
+
+    private int _draw;
     
     public override bool Init()
     {
@@ -42,13 +38,9 @@ public class UI_PlayPopup : UI_Popup
         
         Setting();
         GetText((int)Texts.NameText).text = Managers.Game.SaveData.Name;
+        GetText((int)Texts.MoneyDrawText).text = _draw.ToString();
         
-        GetButton((int)Buttons.StatButton).gameObject.BindEvent( () => Debug.Log($"스텟 버튼"));
-        GetButton((int)Buttons.GameDraw).gameObject.BindEvent( () => Debug.Log($"뽑기 버튼"));
-        
-        Get<UI_AbilityItem>((int)AbilityItems.UI_AbilityItem_MaxHp).SetInfo(Define.StatType.MaxHp);
-        Get<UI_AbilityItem>((int)AbilityItems.UI_AbilityItem_Attack).SetInfo(Define.StatType.Attack);
-        Get<UI_AbilityItem>((int)AbilityItems.UI_AbilityItem_Def).SetInfo(Define.StatType.Def);
+        GetButton((int)Buttons.GameDraw).gameObject.BindEvent(OnDrawButtion);
         
         RefreshUI();
 
@@ -59,40 +51,49 @@ public class UI_PlayPopup : UI_Popup
 
     public void Update()
     {
-        RefreshUI();
+        GetText((int)Texts.Money).text = Managers.Game.SaveData.Money.ToString("D");
     }
 
     public void RefreshUI()
     {
-        // GetText((int)Texts.Timer).text = Managers.Game.PlayerName;
+        Get<UI_AbilityItem>((int)AbilityItems.UI_AbilityItem_MaxHp).SetInfo(Define.StatType.MaxHp);
+        Get<UI_AbilityItem>((int)AbilityItems.UI_AbilityItem_Attack).SetInfo(Define.StatType.Attack);
+        Get<UI_AbilityItem>((int)AbilityItems.UI_AbilityItem_Def).SetInfo(Define.StatType.Def);
+        
         GetText((int)Texts.Money).text = Managers.Game.SaveData.Money.ToString("D");
     }
 
-    void OnTestClick()
+    void OnDrawButtion()
     {
-        Debug.Log("OnTestClick");
+        if (Managers.Game.SaveData.Money < _draw)
+            return;
+        
+        Managers.Game.SaveData.Money -= _draw;
+
+        Managers.UI.ShowPopupUI<UI_DrawPopup>();
+        Debug.Log("OnDrawButtion");
     }
     void Setting()
     {
-        GameObject player = Managers.Game.Spawn(Define.ObjectType.Player, "Player/HeroKnight");
         
+        // 켄버스 변경 : GameObject 가려서 변경함
         Canvas canvas = gameObject.GetOrAddComponent<Canvas>();
         canvas.renderMode = RenderMode.ScreenSpaceCamera;
         canvas.worldCamera = Camera.main;
         
+        GameObject player = Managers.Game.Spawn(Define.ObjectType.Player, "Player/HeroKnight");
         GameObject go = new GameObject { name = "SpawningPool" };
         SpawningPool pool = go.GetOrAddComponent<SpawningPool>();
-        
         pool.SetKeepMonsterCount(1);
         
-        player.transform.position = new Vector2(-1, 0);
-
+        player.transform.position = new Vector2(-1, -0.4f);
+        _draw = 20;
+        
         if(Managers.Game.SaveData.Reset)
             Managers.Game.SaveData.Reset = false;
 
         Managers.Game.LoadGame();
     }
-
     IEnumerator CoSave(float interval)
     {
         while (true)

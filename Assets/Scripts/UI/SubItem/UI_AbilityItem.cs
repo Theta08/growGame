@@ -11,10 +11,10 @@ public class UI_AbilityItem : UI_Base
         ChangeText,
         UpgradeMoneyText,
     }
-    enum Buttons
-    {
-        UpgradeButton
-    }
+    // enum Buttons
+    // {
+    //     UpgradeButton
+    // }
     enum Images
     {
         UI_AbilityItem,
@@ -33,10 +33,11 @@ public class UI_AbilityItem : UI_Base
         Debug.Log("UI_AbilityItem");
 
         BindText(typeof(Texts));
-        BindButton(typeof(Buttons));
+        // BindButton(typeof(Buttons));
         BindImage(typeof(Images));
         
-        GetButton((int)Buttons.UpgradeButton).gameObject.BindEvent(OnUpgradeButton);
+        // GetButton((int)Buttons.UpgradeButton).gameObject.BindEvent(OnUpgradeButton);
+        gameObject.BindEvent(OnUpgradeButton);
         
         RefreshUI();
         
@@ -56,7 +57,7 @@ public class UI_AbilityItem : UI_Base
 
         _pay += Managers.Game.SaveData.SelectUpgradeCount(_statType);
         
-        GetUpradeSetting();
+        // GetUpradeSetting();
         OnImgSetting();
 
         GetText((int)Texts.TitleText).text = $"{_statType.ToString()} 증가";
@@ -146,7 +147,7 @@ public class UI_AbilityItem : UI_Base
         Managers.Game.SaveData.NextUpgrade(_statType);
         Managers.Game.RefreshPlayerData();
         
-        _pay += Managers.Game.SaveData.SelectUpgradeCount(_statType);
+        // _pay += Managers.Game.SaveData.SelectUpgradeCount(_statType);
         
         RefreshUI();
     }

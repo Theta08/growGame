@@ -54,6 +54,18 @@ public class UI_NamePopup : UI_Popup
         
         Debug.Log("ConfirmButton 실행!");
         Managers.Game.SaveData.Name = _inputField.text;
+        
+        // 초기화
+        Managers.Game.SaveData.AttackUpgrade = new Upgrade { rank = 1, count = 1 };
+        Managers.Game.SaveData.DefUpgrade = new Upgrade { rank = 1, count = 1 };
+        Managers.Game.SaveData.MaxHpUpgrade = new Upgrade { rank = 1, count = 1 };
+        Managers.Game.SaveData.Money = 0;
+        Managers.Game.SaveData.Attack = 4;
+        Managers.Game.SaveData.MaxHp = 300;
+        Managers.Game.SaveData.Hp = 300;
+        Managers.Game.SaveData.Def = 0;
+        Managers.Game.SaveData.PlayTime = 0.0f;
+            
         Managers.Game.SaveGame();
         
         Managers.UI.ClosePopupUI(this);

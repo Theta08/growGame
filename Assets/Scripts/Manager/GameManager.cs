@@ -24,12 +24,7 @@ public class GameManager
     public GameObject GetPlayer{ get {return _player;} set { _player = value; } }
     
     public HeroKnightController PlayerInfo { get { return _playerData; } set { _playerData = value; } }
-    // public String PlayerName { get { return _playerName; } set { _playerName = value; } }
-    //
-    // #region 스텟
-    // public int Money { get { return _gameData.Money; } set { _gameData.Money = value; } }
-    // #endregion
-   
+
     public void Init()
     {
     }
