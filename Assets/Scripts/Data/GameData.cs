@@ -21,7 +21,7 @@ public class GameData
     public int _money;
     public string _name;
     public float _playTime;
-    private bool _reset = false;
+    public bool _reset = false;
     
     private Define.ObjectType _type;
 
@@ -33,7 +33,7 @@ public class GameData
     public string Name { get { return _name; } set { _name = value; } }
     public int Money { get { return _money; } set { _money = value; } }
     public float PlayTime { get { return _playTime; } set { _playTime = value; } }
-    
+
     // 초기화 판별용
     public bool Reset { get { return _reset; } set { _reset = value; } }
     
@@ -46,7 +46,7 @@ public class GameData
             if (MaxHpUpgrade.count * MaxHpUpgrade.rank == 1)
                 _maxHp = value;
             else
-                _maxHp = value + MaxHpUpgrade.count * MaxHpUpgrade.rank;
+                _maxHp = value + 20 + MaxHpUpgrade.count * MaxHpUpgrade.rank;
         }
     }
     public int Hp { get { return _hp; } set { _hp = value; } }

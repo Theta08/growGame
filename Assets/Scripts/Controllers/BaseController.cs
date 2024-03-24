@@ -69,6 +69,9 @@ public abstract class BaseController : MonoBehaviour
     
     private void Update()
     {
+        if (!Managers.Game.IsLive)
+            return;
+        
         switch (State)
         {
             case Define.State.Idle:

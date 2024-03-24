@@ -23,6 +23,9 @@ public class SpawningPool : MonoBehaviour
 
     void Update()
     {
+        // if (!Managers.Game.IsLive)
+        //     return;
+        
         if (_reserveCount + _monsterCount < _keepMonsterCount)
             StartCoroutine("ReserveSpawn");
     }

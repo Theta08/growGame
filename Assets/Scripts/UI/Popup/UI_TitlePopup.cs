@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UI_TitlePopup : UI_Popup
 {
@@ -8,6 +9,7 @@ public class UI_TitlePopup : UI_Popup
     {
         StartButtonText,
         StartButtonText2,
+        ExitButtonText,
     }
 
     enum Buttons
@@ -16,6 +18,8 @@ public class UI_TitlePopup : UI_Popup
         StartButton2,
     }
 
+    private GameObject knight;
+    
     public override bool Init()
     {
         if (base.Init() == false)
@@ -28,13 +32,14 @@ public class UI_TitlePopup : UI_Popup
 
         GetButton((int)Buttons.StartButton).gameObject.BindEvent(OnClickStartButton);
         GetButton((int)Buttons.StartButton2).gameObject.BindEvent(OnClickLoadButton);
+        GetButton((int)Buttons.StartButton2).gameObject.BindEvent(OnExitButton);
         
         GetText((int)Texts.StartButtonText).text = "새로하기";
         
         Managers.Sound.Clear();
         Managers.Sound.Play(Define.Sound.Bgm, "Sound_MainTitle", 0.25f);
 
-        if (Managers.Game.LoadGame())
+        if (Managers.Game.LoadGame() && Managers.Game.SaveData.Reset == false)
         {
             GetButton((int)Buttons.StartButton2).gameObject.SetActive(true);
             GetText((int)Texts.StartButtonText2).text = "불러오기";
@@ -42,13 +47,20 @@ public class UI_TitlePopup : UI_Popup
         else
             GetButton((int)Buttons.StartButton2).gameObject.SetActive(false);
 
+        // 켄버스 변경 : GameObject 가려서 변경함
+        Canvas canvas = gameObject.GetOrAddComponent<Canvas>();
+        canvas.renderMode = RenderMode.ScreenSpaceCamera;
+        canvas.worldCamera = Camera.main;
+
+        knight = Managers.Game.Spawn(Define.ObjectType.Player, "Player/Knight");
+        knight.transform.position = new Vector3(0, 0.75f, 0);
+
         return true;
     }
  
     void OnClickStartButton()
     {
-        Debug.Log("OnClickStartButton");
-
+        Managers.Game.Despawn(knight);
         Managers.Sound.Play(Define.Sound.Effect, "Sound_MainButton");
         
         Managers.Game.Init();
@@ -60,8 +72,15 @@ public class UI_TitlePopup : UI_Popup
     
     void OnClickLoadButton()
     {
-        Debug.Log("OnClickLoadButton");
+        Managers.Game.Despawn(knight);
+        Managers.Sound.Play(Define.Sound.Effect, "Sound_MainButton");
         Managers.UI.ClosePopupUI(this);
         Managers.UI.ShowPopupUI<UI_PlayPopup>();
+    }
+    
+    void OnExitButton()
+    {
+        Managers.Sound.Play(Define.Sound.Effect, "Sound_Select");
+        Application.Quit();
     }
 }

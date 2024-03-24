@@ -43,7 +43,8 @@ public class UI_PlayPopup : UI_Popup
         GetButton((int)Buttons.GameDraw).gameObject.BindEvent(OnDrawButtion);
         
         RefreshUI();
-
+        Managers.Game.Resume();
+        
         StartCoroutine(CoSave(3.0f));
         
         return true;
@@ -51,7 +52,13 @@ public class UI_PlayPopup : UI_Popup
 
     public void Update()
     {
+        if (!Managers.Game.IsLive)
+            return;
+        
+        float remainTime = Managers.Game.SaveData.PlayTime += Time.deltaTime;
+        
         GetText((int)Texts.Money).text = Managers.Game.SaveData.Money.ToString("D");
+        GetText((int)Texts.Timer).text = Managers.Game.GetPlayerTimer(remainTime);
     }
 
     public void RefreshUI()
@@ -69,9 +76,8 @@ public class UI_PlayPopup : UI_Popup
             return;
         
         Managers.Game.SaveData.Money -= _draw;
-
+        Managers.Sound.Play(Define.Sound.Effect, "Sound_Draw");
         Managers.UI.ShowPopupUI<UI_DrawPopup>();
-        Debug.Log("OnDrawButtion");
     }
     void Setting()
     {
@@ -89,10 +95,10 @@ public class UI_PlayPopup : UI_Popup
         player.transform.position = new Vector2(-1, -0.4f);
         _draw = 20;
         
+        Managers.Game.LoadGame();
+
         if(Managers.Game.SaveData.Reset)
             Managers.Game.SaveData.Reset = false;
-
-        Managers.Game.LoadGame();
     }
     IEnumerator CoSave(float interval)
     {

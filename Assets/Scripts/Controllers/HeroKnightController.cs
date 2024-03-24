@@ -2,9 +2,9 @@
 using System.Collections;
 using Unity.VisualScripting;
 
-public class HeroKnightController : BaseController 
+public class HeroKnightController : BaseController
 {
-    
+
     public override bool Init()
     {
         if (base.Init() == false)
@@ -47,6 +47,4 @@ public class HeroKnightController : BaseController
         // State = Define.State.Idle;
     }
 
-
-    
 }

@@ -61,8 +61,8 @@ public class UI_NamePopup : UI_Popup
         Managers.Game.SaveData.MaxHpUpgrade = new Upgrade { rank = 1, count = 1 };
         Managers.Game.SaveData.Money = 0;
         Managers.Game.SaveData.Attack = 4;
-        Managers.Game.SaveData.MaxHp = 300;
-        Managers.Game.SaveData.Hp = 300;
+        Managers.Game.SaveData.MaxHp = 100;
+        Managers.Game.SaveData.Hp = 100;
         Managers.Game.SaveData.Def = 0;
         Managers.Game.SaveData.PlayTime = 0.0f;
             

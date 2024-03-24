@@ -143,11 +143,11 @@ public class UI_AbilityItem : UI_Base
             return;
         }
         
+        Managers.Sound.Play(Define.Sound.Effect, "Sound_Select");
+        
         Managers.Game.SaveData.Money -= _pay;
         Managers.Game.SaveData.NextUpgrade(_statType);
         Managers.Game.RefreshPlayerData();
-        
-        // _pay += Managers.Game.SaveData.SelectUpgradeCount(_statType);
         
         RefreshUI();
     }

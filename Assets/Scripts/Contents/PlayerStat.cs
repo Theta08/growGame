@@ -26,7 +26,7 @@ public class PlayerStat : Stat
         DefUpgrade = upgrade;
         MaxHpUpgrade = upgrade;
         
-        MaxHp = 300;
+        MaxHp = 100;
         Hp = MaxHp;
         Attack = 4;
         PlayTime = 0.0f;

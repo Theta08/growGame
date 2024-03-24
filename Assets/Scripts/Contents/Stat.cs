@@ -9,7 +9,7 @@ public class Stat: MonoBehaviour
     [SerializeField]
     protected int _attack;
     protected int _maxHp;
-    
+
     [SerializeField]
     protected Define.ObjectType _type;
     [SerializeField] 
@@ -42,6 +42,13 @@ public class Stat: MonoBehaviour
     private void OnEnable()
     {
         _hp = _maxHp;
+        if (Type == Define.ObjectType.Monster)
+        {
+            float reMainTimer = Managers.Game.SaveData.PlayTime;
+            int min = Mathf.FloorToInt(reMainTimer / 30);
+            EnemieUpgrade(2);
+            // EnemieUpgrade(min);
+        }
     }
 
     public void OnAttacked(Stat attacker)
@@ -76,6 +83,27 @@ public class Stat: MonoBehaviour
         // Debug.Log("Dead");
         myObject = gameObject.GetComponent<BaseController>();
         myObject.State = Define.State.Die;
+
+        if (Type == Define.ObjectType.Player)
+        {
+            Managers.UI.ShowPopupUI<UI_DeadPopup>();
+            Managers.Game.SaveData.Reset = true;
+        }
     }
     public virtual void GetPlayerStat(GameData gameData){}
+
+    void EnemieUpgrade(int min)
+    {
+        if (min == 0)
+            return;
+        
+        MaxHp += min;
+        Hp = MaxHp;
+        Attack += min;
+        Def *= min;
+
+        if (min > 2)
+            Money += min - 1;
+
+    }
 }

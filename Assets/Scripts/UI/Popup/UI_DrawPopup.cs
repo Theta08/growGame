@@ -29,19 +29,20 @@ public class UI_DrawPopup : UI_Popup
     {
         if (base.Init() == false)
             return false;
-
+        
         BindText(typeof(Texts));
         BindButton(typeof(Buttons));
         Bind<UI_DrawAbilityItem>(typeof(GameObjects));
         
-        GetButton((int)Buttons.CancelButton).gameObject.BindEvent(
-            () => Managers.UI.ClosePopupUI(this));
+        GetButton((int)Buttons.CancelButton).gameObject.BindEvent(OnDrawPopupClose);
         GetButton((int)Buttons.UI_DrawAbilityItem1).gameObject.BindEvent(OnDrawPopupClose);
         GetButton((int)Buttons.UI_DrawAbilityItem2).gameObject.BindEvent(OnDrawPopupClose);
         
         Setting();
         Get<UI_DrawAbilityItem>((int)GameObjects.UI_DrawAbilityItem1).SetInfo(_type[0]);
         Get<UI_DrawAbilityItem>((int)GameObjects.UI_DrawAbilityItem2).SetInfo(_type[1]);
+        
+        Managers.Game.Stop();
         
         return true;
     }
@@ -70,11 +71,12 @@ public class UI_DrawPopup : UI_Popup
 
     void OnDrawPopupClose()
     {
-        Debug.Log("OnDrawAbilityItem");
+        Managers.Sound.Play(Define.Sound.Effect, "Sound_Select");
         
         GameObject go = GameObject.Find("UI_PlayPopup");
         go.GetComponent<UI_PlayPopup>().RefreshUI();
         
+        Managers.Game.Resume();
         Managers.UI.ClosePopupUI(this);
     }
 }

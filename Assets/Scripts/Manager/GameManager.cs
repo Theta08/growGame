@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
@@ -8,23 +7,22 @@ using UnityEngine;
 using UnityEngine.Timeline;
 
 
-
-
 public class GameManager
 {
-    GameData _gameData = new GameData();
-    public GameData SaveData { get { return _gameData; } set { _gameData = value; } }
+    private string _playerName;
+    [SerializeField]
+    private bool _isLive = true;
+    private HeroKnightController _playerData;
     
     GameObject _player;
+    GameData _gameData = new GameData();
     HashSet<GameObject> _monsters = new HashSet<GameObject>();
-    private string _playerName;
-    private HeroKnightController _playerData;
-   
-    public Action<int> OnSpawnEvent;
-    public GameObject GetPlayer{ get {return _player;} set { _player = value; } }
-    
-    public HeroKnightController PlayerInfo { get { return _playerData; } set { _playerData = value; } }
 
+    public Action<int> OnSpawnEvent;
+    public GameData SaveData { get { return _gameData; } set { _gameData = value; } }
+    public GameObject GetPlayer{ get {return _player;} set { _player = value; } }
+    public HeroKnightController PlayerInfo { get { return _playerData; } set { _playerData = value; } }
+    public bool IsLive { get { return _isLive;} set { _isLive = value; } }
     public void Init()
     {
     }
@@ -88,6 +86,27 @@ public class GameManager
     public void RefreshPlayerData()
     {
         GetPlayer.GetComponent<HeroKnightController>().RefreshStat();
+    }
+    
+    public string GetPlayerTimer(float playTime)
+    {
+        float reMainTimer = playTime;
+        int min = Mathf.FloorToInt(reMainTimer / 60);
+        int sec = Mathf.FloorToInt(reMainTimer % 60);
+
+        return $"{min.ToString("D2")} : {sec.ToString("D2")}";
+    }
+    
+    public void Stop()
+    {
+        _isLive = false;
+        Time.timeScale = 0;
+    }
+
+    public void Resume()
+    {
+        _isLive = true;
+        Time.timeScale = 1;
     }
     
     #region Save & Load
