@@ -16,6 +16,7 @@ public class UI_TitlePopup : UI_Popup
     {
         StartButton,
         StartButton2,
+        ExitButton,
     }
 
     private GameObject knight;
@@ -32,7 +33,7 @@ public class UI_TitlePopup : UI_Popup
 
         GetButton((int)Buttons.StartButton).gameObject.BindEvent(OnClickStartButton);
         GetButton((int)Buttons.StartButton2).gameObject.BindEvent(OnClickLoadButton);
-        GetButton((int)Buttons.StartButton2).gameObject.BindEvent(OnExitButton);
+        GetButton((int)Buttons.ExitButton).gameObject.BindEvent(OnExitButton);
         
         GetText((int)Texts.StartButtonText).text = "새로하기";
         
@@ -80,6 +81,7 @@ public class UI_TitlePopup : UI_Popup
     
     void OnExitButton()
     {
+        Debug.Log("quit");
         Managers.Sound.Play(Define.Sound.Effect, "Sound_Select");
         Application.Quit();
     }
