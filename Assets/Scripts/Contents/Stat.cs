@@ -16,7 +16,8 @@ public class Stat: MonoBehaviour
     protected int _money;
     [SerializeField] 
     public string _name;
-    
+
+    private int enemieCount;
     private BaseController myObject;
     
     public string Name { get { return _name; } set { _name = value; } }
@@ -46,7 +47,7 @@ public class Stat: MonoBehaviour
         {
             float reMainTimer = Managers.Game.SaveData.PlayTime;
             int min = Mathf.FloorToInt(reMainTimer / 30);
-            EnemieUpgrade(2);
+            EnemieUpgrade(min);
             // EnemieUpgrade(min);
         }
     }
@@ -94,9 +95,9 @@ public class Stat: MonoBehaviour
 
     void EnemieUpgrade(int min)
     {
-        if (min == 0)
+        if (min == 0 || enemieCount == min)
             return;
-        
+
         MaxHp += min;
         Hp = MaxHp;
         Attack += min;
@@ -105,5 +106,6 @@ public class Stat: MonoBehaviour
         if (min > 2)
             Money += min - 1;
 
+        enemieCount = min;
     }
 }
