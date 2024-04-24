@@ -10,6 +10,7 @@
  * 세이브 로드
  * 스탯 증가
  * 뽑기 시스템
+
    
-* [블로그 보기](https://theta08.github.io/)
+<!-- [블로그 보기](https://theta08.github.io/) -->
 
