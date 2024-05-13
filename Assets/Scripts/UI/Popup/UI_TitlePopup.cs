@@ -26,8 +26,6 @@ public class UI_TitlePopup : UI_Popup
         if (base.Init() == false)
             return false;
         
-        Debug.Log("UI_TitlePopup");
-        
         BindText(typeof(Texts));
         BindButton(typeof(Buttons));
 
@@ -81,7 +79,6 @@ public class UI_TitlePopup : UI_Popup
     
     void OnExitButton()
     {
-        Debug.Log("quit");
         Managers.Sound.Play(Define.Sound.Effect, "Sound_Select");
         Application.Quit();
     }

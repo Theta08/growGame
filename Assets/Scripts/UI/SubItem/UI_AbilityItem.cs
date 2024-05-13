@@ -29,8 +29,6 @@ public class UI_AbilityItem : UI_Base
     {
         if (base.Init() == false)
             return false;
-        
-        Debug.Log("UI_AbilityItem");
 
         BindText(typeof(Texts));
         // BindButton(typeof(Buttons));
@@ -147,8 +145,9 @@ public class UI_AbilityItem : UI_Base
         
         Managers.Game.SaveData.Money -= _pay;
         Managers.Game.SaveData.NextUpgrade(_statType);
+        // 플레이어 스탯 초기화 
         Managers.Game.RefreshPlayerData();
-        
+        // 해당 데이터 초기화
         RefreshUI();
     }
 }

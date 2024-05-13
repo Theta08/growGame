@@ -13,7 +13,6 @@ public class UI_DrawAbilityItem : UI_Base
     enum Buttons { }
     enum Images
     {
-        UI_AbilityItem,
         Icon,
     }
 
@@ -26,15 +25,11 @@ public class UI_DrawAbilityItem : UI_Base
         if (base.Init() == false)
             return false;
         
-        Debug.Log("UI_DrawAbilityItem");
-
         BindText(typeof(Texts));
         BindButton(typeof(Buttons));
         BindImage(typeof(Images));
         
         gameObject.BindEvent(OnUpgradeButton);
-        
-        // RefreshUI();
         
         return true;
     }
@@ -103,7 +98,7 @@ public class UI_DrawAbilityItem : UI_Base
     
     string GetChangeRank()
     {
-        _rank = Random.Range(1, 4);
+        _rank = GetWeightedRandomRank();
         string currenRank = "";
         
         switch (_statType)
@@ -122,9 +117,21 @@ public class UI_DrawAbilityItem : UI_Base
        return $"{currenRank} > {_rank}";
     }
 
+    int GetWeightedRandomRank()
+    {
+        // 아이템 이름, 확률 설정
+        List<WeightedItem> weightedItems = new List<WeightedItem>()
+        {
+            new WeightedItem { rank = 1, weight = 0.5f },
+            new WeightedItem { rank = 2, weight = 0.2f },
+            new WeightedItem { rank = 3, weight = 0.1f },
+        };
+        
+        return WeightedRandomUtility.GetWeightedRandom(weightedItems);
+    }
+    
     public void OnUpgradeButton()
     {
-        Debug.Log("OnUpgradeButton");
         // 스텟 랭크 적용 
         Managers.Game.SaveData.ChangRank(_statType, _rank);
         // 종료
